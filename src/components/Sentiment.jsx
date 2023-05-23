@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import CircularProgress from '@mui/material/CircularProgress';
+import TweetBody from './TweetBody';
 
-export const Sentiment = ({ output, setOn }) => {
+
+export const Sentiment = ({ output }) => {
 
   const [data, setData] = useState([])
   
-
-/*   useEffect(() => {
-    fetch("/members").then(
-      res => res.json()
-    ).then(
-      data => {
-        setData(data)
-        //console.log(data)
-      }
-    )
-  }, []) */
   useEffect(() => {
     fetch("/twitter",{
       method: 'POST',
@@ -22,18 +14,20 @@ export const Sentiment = ({ output, setOn }) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({data: output})
-    }).then(response => response.text()).then(data => setData(JSON.parse(data))).catch(error => console.log(error))
-  }, [])
+    }).then(response => response.json()).then(
+      data => {setData(data)}).catch(
+      error => console.log(error))
+  }, [output])
 
   if(data.length === 0){
     console.log("beep")
   }else{
-    console.log(Object.keys(data['tweets']).map((key)=>console.log(data['tweets'][key])))
+    console.log("boop")
   }
 
   return (
-    <div className='mx-auto my-auto text-center'>
-      {(data.length === 0 ? <p>loading...</p> : <p className='text-white'>{Object.keys(data['tweets']).map((key)=>(data['tweets'][key]))}</p>)}
+    <div className='mx-auto mt-5 text-center px-10'>
+      {(data.length === 0 ? <div className=''><CircularProgress /></div> : <TweetBody data={data}/>)}
     </div>
   )
 }
