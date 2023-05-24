@@ -4,7 +4,7 @@ import "./SearchResult.css"
 export const SearchResults = ({ results, setShow, setValue }) => {
 
   const hide = () => {
-    setValue(results[1]);
+    setValue(results[0]);
     setShow(false);
   }
 
